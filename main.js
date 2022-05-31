@@ -74,11 +74,17 @@ function crearGrafo(datos) {
       }
     },
     edges: {
-      width: 8,
+      width: 2,
       background: {
         enabled: true,
-        color: "#6AA84F"
-      }
+        color: "#545454"
+      },
+			arrows: {
+					to: {
+							enabled: true,
+							type: "arrow"
+					}
+			}
     }
   };
 
