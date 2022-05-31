@@ -53,12 +53,6 @@ function crearGrafo(datos) {
   };
 
   var options = {
-    layout: {
-      hierarchical: {
-        direction: "DU",
-        sortMethod: "directed"
-      }
-    },
     nodes: {
       shape: "circle",
       borderWidth: 3,
@@ -71,7 +65,8 @@ function crearGrafo(datos) {
         size: 15,
         strokeWidth: 1,
         strokeColor: "white"
-      }
+      },
+			physics:false
     },
     edges: {
       width: 2,
