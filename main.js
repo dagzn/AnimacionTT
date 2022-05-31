@@ -53,6 +53,12 @@ function crearGrafo(datos) {
   };
 
   var options = {
+		layout: {
+      hierarchical: {
+        direction: "UD",
+        sortMethod: "directed"
+      }
+    },
     nodes: {
       shape: "circle",
       borderWidth: 3,
@@ -70,10 +76,12 @@ function crearGrafo(datos) {
     },
     edges: {
       width: 2,
-      background: {
-        enabled: true,
-        color: "#545454"
-      },
+			font: {
+					color: "black",
+					size: 25,
+					strokeWidth: 3,
+					strokeColor: "white"
+			},
 			arrows: {
 					to: {
 							enabled: true,
@@ -111,7 +119,7 @@ function crearGrafo(datos) {
 		const cap = m.cantidad;
 		const cost = 0;
 		console.log("Source -> "+ m.nombre + " cap=" + cap.toString() + " cost=" + cost.toString());
-		data.edges.update([{from: fuente, to: i+1}]);
+		data.edges.update([{from: fuente, to: i+1, color: "#545454"}]);
 
 		network.fit();
 	}
@@ -128,7 +136,7 @@ function crearGrafo(datos) {
 		const cap = datos.salones;
 		const cost = 0;
 		console.log(b.nombre + " -> Sink cap=" + cap.toString() + " cost=" + cost.toString());
-		data.edges.update([{from: nodo, to: destino}]);
+		data.edges.update([{from: nodo, to: destino, color: "#545454"}]);
 		network.fit();
 	}
 	console.log(b_id);
@@ -142,7 +150,7 @@ function crearGrafo(datos) {
 		let cap = p.clases;
 		let cost = 0;
 		console.log(p.nombre + " -> "+p.nombre+" cap=" + cap.toString() + " cost=" + cost.toString());
-		data.edges.update([{from: entrada, to: salida}]);
+		data.edges.update([{from: entrada, to: salida, color: "#545454"}]);
 
 		network.fit();
 
@@ -154,7 +162,7 @@ function crearGrafo(datos) {
 			console.log(m);
 			if(m_id.has(m.id)) {
 				console.log(indiceNombre.get(m_id.get(m.id)) + " -> "+p.nombre+" cap=" + m.limite.toString() + " cost=" + m.preferencia.toString());
-				data.edges.update([{from: m_id.get(m.id), to: entrada}]);
+				data.edges.update([{from: m_id.get(m.id), to: entrada, color: "#545454"}]);
 				network.fit();
 			}
 		}
@@ -165,7 +173,7 @@ function crearGrafo(datos) {
 			if(b_id.has(b.id)) {
 				const aux = 1;
 				console.log(p.nombre + " -> "+ indiceNombre.get(b_id.get(b.id))  +" cap=" + aux.toString() + " cost=" + b.preferencia.toString());
-				data.edges.update([{from: salida, to: b_id.get(b.id)}]);
+				data.edges.update([{from: salida, to: b_id.get(b.id), color: "#545454"}]);
 				network.fit();
 			}
 		}
