@@ -47,7 +47,7 @@ async function sleep(ms) {
 let network = {};
 let data = {};
 
-function crearGrafo(datos) {
+async function crearGrafo(datos) {
 	let nodes = [];
   let edges = [];
 
@@ -108,7 +108,7 @@ function crearGrafo(datos) {
 	const destino = n-1;
 	data.nodes.update([{id: destino, label: "T"}]);
 	network.fit();
-	sleep(500);
+	await sleep(500);
 
 	let indiceNombre = new Map();
 	let m_id = new Map();
@@ -128,7 +128,7 @@ function crearGrafo(datos) {
 
 		network.fit();
 
-		sleep(500);
+		await sleep(500);
 	}
 	console.log(m_id);
 
@@ -146,7 +146,7 @@ function crearGrafo(datos) {
 		data.edges.update([{from: nodo, to: destino, color: "#545454"}]);
 		network.fit();
 
-		sleep(500);
+		await sleep(500);
 	}
 	console.log(b_id);
 
@@ -163,7 +163,7 @@ function crearGrafo(datos) {
 
 		network.fit();
 
-		sleep(500);
+		await sleep(500);
 
 		indiceNombre.set(entrada, p.nombre);
 		indiceNombre.set(salida, p.nombre);
@@ -176,7 +176,7 @@ function crearGrafo(datos) {
 				data.edges.update([{from: m_id.get(m.id), to: entrada, color: "#545454"}]);
 				network.fit();
 
-				sleep(500);
+				await sleep(500);
 			}
 		}
 
@@ -188,7 +188,7 @@ function crearGrafo(datos) {
 				console.log(p.nombre + " -> "+ indiceNombre.get(b_id.get(b.id))  +" cap=" + aux.toString() + " cost=" + b.preferencia.toString());
 				data.edges.update([{from: salida, to: b_id.get(b.id), color: "#545454"}]);
 				network.fit();
-				sleep(500);
+				await sleep(500);
 			}
 		}
 	}
