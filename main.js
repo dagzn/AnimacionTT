@@ -40,18 +40,61 @@ function handleSubmit (event) {
 // Listen for submit events
 form.addEventListener('submit', handleSubmit);
 
+let network = {};
+let data = {};
 
 function crearGrafo(datos) {
-	// console.log(datos.salones)
-	// console.log(datos.materias)
-	// console.log(datos.profesores)
-	// console.log(datos.bloques)
+	let nodes = [];
+  let edges = [];
+
+  data = {
+    nodes: new vis.DataSet(nodes),
+    edges: new vis.DataSet(edges)
+  };
+
+  var options = {
+    layout: {
+      hierarchical: {
+        direction: "DU",
+        sortMethod: "directed"
+      }
+    },
+    nodes: {
+      shape: "circle",
+      borderWidth: 3,
+      color: {
+        border: "#6AA84F",
+        background: "#3C78D8"
+      },
+      font: {
+        color: "white",
+        size: 15,
+        strokeWidth: 1,
+        strokeColor: "white"
+      }
+    },
+    edges: {
+      width: 8,
+      background: {
+        enabled: true,
+        color: "#6AA84F"
+      }
+    }
+  };
+
+  let container = document.getElementById("SegmentTreeCanvas");
+
+  network = new vis.Network(container, data, options);
+
 	const n_materias = datos.materias.length;
 	const n_profesores = datos.profesores.length;
 	const n_bloques = datos.bloques.length;
 	const n = 1 + n_materias + 2 * n_profesores + n_bloques + 1;
 	const fuente = 0;
+	data.nodes.update([{id: fuente, label: "S"}]);
 	const destino = n-1;
+	data.nodes.update([{id: destino, label: "T"}]);
+	network.fit();
 
 	let indiceNombre = new Map();
 	let m_id = new Map();
@@ -62,9 +105,14 @@ function crearGrafo(datos) {
 		indiceNombre.set(i+1, m.nombre);
 		m_id.set(m.id, i+1);
 
+		data.nodes.update([{id: i+1, label: m.nombre}]);
+
 		const cap = m.cantidad;
 		const cost = 0;
 		console.log("Source -> "+ m.nombre + " cap=" + cap.toString() + " cost=" + cost.toString());
+		data.edges.update([{from: fuente, to: i+1}]);
+
+		network.fit();
 	}
 	console.log(m_id);
 
@@ -74,19 +122,28 @@ function crearGrafo(datos) {
 		indiceNombre.set(nodo, b.nombre);
 		b_id.set(b.id, nodo);
 
+		data.nodes.update([{id: nodo, label: b.nombre}]);
+
 		const cap = datos.salones;
 		const cost = 0;
 		console.log(b.nombre + " -> Sink cap=" + cap.toString() + " cost=" + cost.toString());
+		data.edges.update([{from: nodo, to: destino}]);
+		network.fit();
 	}
 	console.log(b_id);
 
 	for(let i=0; i < n_profesores; i++) {
 		const p = datos.profesores[i];
 		const entrada = 1 + n_materias + 2*i;
+		data.nodes.update([{id: entrada, label: p.nombre}]);
 		const salida  = 1 + n_materias + 2*i + 1;
+		data.nodes.update([{id: salida, label: p.nombre}]);
 		let cap = p.clases;
 		let cost = 0;
 		console.log(p.nombre + " -> "+p.nombre+" cap=" + cap.toString() + " cost=" + cost.toString());
+		data.edges.update([{from: entrada, to: salida}]);
+
+		network.fit();
 
 		indiceNombre.set(entrada, p.nombre);
 		indiceNombre.set(salida, p.nombre);
@@ -96,6 +153,8 @@ function crearGrafo(datos) {
 			console.log(m);
 			if(m_id.has(m.id)) {
 				console.log(indiceNombre.get(m_id.get(m.id)) + " -> "+p.nombre+" cap=" + m.limite.toString() + " cost=" + m.preferencia.toString());
+				data.edges.update([{from: m_id.get(m.id), to: entrada}]);
+				network.fit();
 			}
 		}
 
@@ -105,6 +164,8 @@ function crearGrafo(datos) {
 			if(b_id.has(b.id)) {
 				const aux = 1;
 				console.log(p.nombre + " -> "+ indiceNombre.get(b_id.get(b.id))  +" cap=" + aux.toString() + " cost=" + b.preferencia.toString());
+				data.edges.update([{from: salida, to: b_id.get(b.id)}]);
+				network.fit();
 			}
 		}
 	}
