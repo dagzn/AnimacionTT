@@ -91,7 +91,7 @@ function crearGrafo(datos) {
 		indiceNombre.set(entrada, p.nombre);
 		indiceNombre.set(salida, p.nombre);
 		
-		for(let j=0; j < p.materias; j++) {
+		for(let j=0; j < p.materias.length; j++) {
 			const m = p.materias[j];
 			console.log(m);
 			if(m_id.has(m.id)) {
@@ -99,7 +99,7 @@ function crearGrafo(datos) {
 			}
 		}
 
-		for(let j=0; j < p.bloques; j++) {
+		for(let j=0; j < p.bloques.length; j++) {
 			const b = p.bloques[j];
 			console.log(b);
 			if(b_id.has(b.id)) {
