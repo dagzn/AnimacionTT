@@ -42,8 +42,66 @@ form.addEventListener('submit', handleSubmit);
 
 
 function crearGrafo(datos) {
-	console.log(datos.salones)
-	console.log(datos.materias)
-	console.log(datos.profesores)
-	console.log(datos.bloques)
+	// console.log(datos.salones)
+	// console.log(datos.materias)
+	// console.log(datos.profesores)
+	// console.log(datos.bloques)
+	const n_materias = datos.materias.length;
+	const n_profesores = datos.profesores.length;
+	const n_bloques = datos.bloques.length;
+	const n = 1 + n_materias + 2 * n_profeosres + n_bloques + 1;
+	const fuente = 0;
+	const destino = n-1;
+
+	let indiceNombre = new Map();
+	let m_id = new Map();
+	let b_id = new Map();
+	
+	for(let i=0; i < n_materias; i++) {
+		const m = datos.materias[i];
+		indiceNombre.set(i+1, m.nombre);
+		m_id.set(m.id, i+1);
+
+		const cap = m.cantidad;
+		const cost = 0;
+		console.log("Source -> "+ m.nombre + " cap=" + cap.toString() + " cost=" + cost.toString());
+	}
+
+	for(let i=0; i < n_bloques; i++) {
+		const b = datos.bloques[i];
+		const nodo = 1 + n_materias + 2*n_profesores + i;
+		indiceNombre.set(nodo, b.nombre);
+		b_id.set(b.id, nodo);
+
+		const cap = datos.salones;
+		const cost = 0;
+		console.log(b.nombre + " -> Sink cap=" + cap.toString() + " cost=" + cost.toString());
+	}
+
+	for(let i=0; i < n_profesores; i++) {
+		const p = datos.profesores[i];
+		const entrada = 1 + n_materias + 2*i;
+		const salida  = 1 + n_materias + 2*i + 1;
+		let cap = p.clases;
+		let cost = 0;
+		console.log(p.nombre + " -> "+p.nombre+" cap=" + cap.toString() + " cost=" + cost.toString());
+
+		indiceNombre.set(entrada, p.nombre);
+		indiceNombre.set(salida, p.nombre);
+		
+		for(let j=0; j < p.materias; j++) {
+			const m = p.materias[j];
+			if(m_id.has(m.id)) {
+				console.log(indiceNombre.get(m_id.get(m.id)) + " -> "+p.nombre+" cap=" + m.limite.toString() + " cost=" + m.preferencia.toString());
+			}
+		}
+
+		for(let j=0; j < p.bloques; j++) {
+			const b = p.bloques[j];
+			if(b_id.has(b.id)) {
+				const aux = 1;
+				console.log(p.nombre + " -> "+ indiceNombre.get(b_id.get(b.id))  +" cap=" + aux.toString() + " cost=" + b.preferencia.toString());
+			}
+		}
+	}
 }
