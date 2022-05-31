@@ -11,6 +11,7 @@ function logFile (event) {
 	let json = JSON.parse(str);
 	console.log('string', str);
 	console.log('json', json);
+	crearGrafo(json)
 }
 
 /**
@@ -38,3 +39,11 @@ function handleSubmit (event) {
 
 // Listen for submit events
 form.addEventListener('submit', handleSubmit);
+
+
+function crearGrafo(datos) {
+	console.log(datos.salones)
+	console.log(datos.materias)
+	console.log(datos.profesores)
+	console.log(datos.bloques)
+}
