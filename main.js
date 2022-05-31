@@ -40,6 +40,10 @@ function handleSubmit (event) {
 // Listen for submit events
 form.addEventListener('submit', handleSubmit);
 
+async function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 let network = {};
 let data = {};
 
@@ -104,6 +108,7 @@ function crearGrafo(datos) {
 	const destino = n-1;
 	data.nodes.update([{id: destino, label: "T"}]);
 	network.fit();
+	sleep(500);
 
 	let indiceNombre = new Map();
 	let m_id = new Map();
@@ -122,6 +127,8 @@ function crearGrafo(datos) {
 		data.edges.update([{from: fuente, to: i+1, color: "#545454"}]);
 
 		network.fit();
+
+		sleep(500);
 	}
 	console.log(m_id);
 
@@ -138,6 +145,8 @@ function crearGrafo(datos) {
 		console.log(b.nombre + " -> Sink cap=" + cap.toString() + " cost=" + cost.toString());
 		data.edges.update([{from: nodo, to: destino, color: "#545454"}]);
 		network.fit();
+
+		sleep(500);
 	}
 	console.log(b_id);
 
@@ -154,6 +163,8 @@ function crearGrafo(datos) {
 
 		network.fit();
 
+		sleep(500);
+
 		indiceNombre.set(entrada, p.nombre);
 		indiceNombre.set(salida, p.nombre);
 		
@@ -164,6 +175,8 @@ function crearGrafo(datos) {
 				console.log(indiceNombre.get(m_id.get(m.id)) + " -> "+p.nombre+" cap=" + m.limite.toString() + " cost=" + m.preferencia.toString());
 				data.edges.update([{from: m_id.get(m.id), to: entrada, color: "#545454"}]);
 				network.fit();
+
+				sleep(500);
 			}
 		}
 
@@ -175,6 +188,7 @@ function crearGrafo(datos) {
 				console.log(p.nombre + " -> "+ indiceNombre.get(b_id.get(b.id))  +" cap=" + aux.toString() + " cost=" + b.preferencia.toString());
 				data.edges.update([{from: salida, to: b_id.get(b.id), color: "#545454"}]);
 				network.fit();
+				sleep(500);
 			}
 		}
 	}
