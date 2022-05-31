@@ -66,6 +66,7 @@ function crearGrafo(datos) {
 		const cost = 0;
 		console.log("Source -> "+ m.nombre + " cap=" + cap.toString() + " cost=" + cost.toString());
 	}
+	console.log(m_id);
 
 	for(let i=0; i < n_bloques; i++) {
 		const b = datos.bloques[i];
@@ -77,6 +78,7 @@ function crearGrafo(datos) {
 		const cost = 0;
 		console.log(b.nombre + " -> Sink cap=" + cap.toString() + " cost=" + cost.toString());
 	}
+	console.log(b_id);
 
 	for(let i=0; i < n_profesores; i++) {
 		const p = datos.profesores[i];
@@ -91,6 +93,7 @@ function crearGrafo(datos) {
 		
 		for(let j=0; j < p.materias; j++) {
 			const m = p.materias[j];
+			console.log(m);
 			if(m_id.has(m.id)) {
 				console.log(indiceNombre.get(m_id.get(m.id)) + " -> "+p.nombre+" cap=" + m.limite.toString() + " cost=" + m.preferencia.toString());
 			}
@@ -98,6 +101,7 @@ function crearGrafo(datos) {
 
 		for(let j=0; j < p.bloques; j++) {
 			const b = p.bloques[j];
+			console.log(b);
 			if(b_id.has(b.id)) {
 				const aux = 1;
 				console.log(p.nombre + " -> "+ indiceNombre.get(b_id.get(b.id))  +" cap=" + aux.toString() + " cost=" + b.preferencia.toString());
