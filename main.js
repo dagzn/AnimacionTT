@@ -49,7 +49,7 @@ function crearGrafo(datos) {
 	const n_materias = datos.materias.length;
 	const n_profesores = datos.profesores.length;
 	const n_bloques = datos.bloques.length;
-	const n = 1 + n_materias + 2 * n_profeosres + n_bloques + 1;
+	const n = 1 + n_materias + 2 * n_profesores + n_bloques + 1;
 	const fuente = 0;
 	const destino = n-1;
 
