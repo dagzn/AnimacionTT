@@ -13,7 +13,6 @@ function logFile (event) {
 	datos = json;
 	console.log('string', str);
 	console.log('json', json);
-	crearGrafo();
 }
 
 /**
@@ -42,14 +41,36 @@ function handleSubmit (event) {
 // Listen for submit events
 form.addEventListener('submit', handleSubmit);
 
+let buildClicked = true;
+let stepByStepClicked = false;
+let nextStepClicked = false;
+let execStarted = false;
+
 async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+async function pause(ms = 1000) {
+  if (buildClicked) return;
+  if (stepByStepClicked) {
+    return sleep(ms);
+  } else {
+    while (true) {
+      await sleep(10);
+      if (nextStepClicked) {
+        nextStepClicked = false;
+        return;
+      }
+    }
+  }
+}
+
+
 let network = {};
 let data = {};
 
-async function crearGrafo() {
+async function build() {
+	execStarted = true;
 	let nodes = [];
   let edges = [];
 
@@ -110,7 +131,7 @@ async function crearGrafo() {
 	const destino = n-1;
 	data.nodes.update([{id: destino, label: "T"}]);
 	network.fit();
-	await sleep(500);
+	await pause(500);
 
 	let indiceNombre = new Map();
 	let m_id = new Map();
@@ -130,7 +151,7 @@ async function crearGrafo() {
 
 		network.fit();
 
-		await sleep(500);
+		await pause(500);
 	}
 	console.log(m_id);
 
@@ -148,7 +169,7 @@ async function crearGrafo() {
 		data.edges.update([{from: nodo, to: destino, color: "#545454"}]);
 		network.fit();
 
-		await sleep(500);
+		await pause(500);
 	}
 	console.log(b_id);
 
@@ -165,7 +186,7 @@ async function crearGrafo() {
 
 		network.fit();
 
-		await sleep(500);
+		await pause(500);
 
 		indiceNombre.set(entrada, p.nombre);
 		indiceNombre.set(salida, p.nombre);
@@ -178,7 +199,7 @@ async function crearGrafo() {
 				data.edges.update([{from: m_id.get(m.id), to: entrada, color: "#545454"}]);
 				network.fit();
 
-				await sleep(500);
+				await pause(500);
 			}
 		}
 
@@ -190,8 +211,49 @@ async function crearGrafo() {
 				console.log(p.nombre + " -> "+ indiceNombre.get(b_id.get(b.id))  +" cap=" + aux.toString() + " cost=" + b.preferencia.toString());
 				data.edges.update([{from: salida, to: b_id.get(b.id), color: "#545454"}]);
 				network.fit();
-				await sleep(500);
+				await pause(500);
 			}
 		}
 	}
+
+	stepByStepClicked = false;
+  buildClicked = false;
+  nextStepClicked = false;
+  execStarted = false;
 }
+
+function nextStepOnClick() {
+  nextStepClicked = true;
+  buildClicked = false;
+  stepByStepClicked = false;
+  if (!execStarted) {
+    build();
+  }
+}
+
+async function justBuild() {
+  // terminate next execution of step by step or next step if any
+  // and then just end building
+  buildClicked = true;
+  if (execStarted) {
+    stepByStepClicked = false;
+    nextStepClicked = true;
+    await sleep(20);
+  } else {
+    build();
+  }
+}
+
+async function stepByStep() {
+  // terminate next execution of step by step or next step if any
+  // and then just continue with the next step
+  stepByStepClicked = true;
+  if (execStarted) {
+    buildClicked = false;
+    nextStepClicked = true;
+    await sleep(20);
+  } else {
+    build();
+  }
+}
+
