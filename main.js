@@ -1,6 +1,7 @@
 // Get the form and file field
 let form = document.querySelector('#upload');
 let file = document.querySelector('#file');
+let datos = {};
 
 /**
  * Log the uploaded file to the console
@@ -9,9 +10,10 @@ let file = document.querySelector('#file');
 function logFile (event) {
 	let str = event.target.result;
 	let json = JSON.parse(str);
+	datos = json;
 	console.log('string', str);
 	console.log('json', json);
-	crearGrafo(json)
+	crearGrafo();
 }
 
 /**
@@ -47,7 +49,7 @@ async function sleep(ms) {
 let network = {};
 let data = {};
 
-async function crearGrafo(datos) {
+async function crearGrafo() {
 	let nodes = [];
   let edges = [];
 
