@@ -127,6 +127,8 @@ async function build() {
 	const n_bloques = datos.bloques.length;
 	const n = 1 + n_materias + 2 * n_profesores + n_bloques + 1;
 	const fuente = 0;
+	await pause(500);
+
 	data.nodes.update([{id: fuente, label: "S"}]);
 	const destino = n-1;
 	data.nodes.update([{id: destino, label: "T"}]);
