@@ -150,10 +150,14 @@ async function build() {
 		const cap = m.cantidad;
 		const cost = 0;
 		console.log("Source -> "+ m.nombre + " cap=" + cap.toString() + " cost=" + cost.toString());
+		data.nodes.update([{id: fuente, color: {border: "orange"}}]);
+		data.nodes.update([{id: i+1, color: {border: "orange"}}]);
 		data.edges.update([{from: fuente, to: i+1, color: "orange"}]);
 
 		await pause(500);
 
+		data.nodes.update([{id: fuente, color: {border: "#6AA84F"}}]);
+		data.nodes.update([{id: i+1, color: {border: "#6AA84F"}}]);
 		data.edges.update([{from: fuente, to: i+1, color: "#545454"}]);
 	}
 	console.log(m_id);
@@ -170,10 +174,14 @@ async function build() {
 		const cap = datos.salones;
 		const cost = 0;
 		console.log(b.nombre + " -> Sink cap=" + cap.toString() + " cost=" + cost.toString());
+		data.nodes.update([{id: nodo, color: {border: "orange"}}]);
+		data.nodes.update([{id: destino, color: {border: "orange"}}]);
 		data.edges.update([{from: nodo, to: destino, color: "orange"}]);
 
 		await pause(500);
 
+		data.nodes.update([{id: nodo, color: {border: "#6AA84F"}}]);
+		data.nodes.update([{id: destino, color: {border: "#6AA84F"}}]);
 		data.edges.update([{from: nodo, to: destino, color: "#545454"}]);
 
 	}
@@ -189,10 +197,14 @@ async function build() {
 		let cap = p.clases;
 		let cost = 0;
 		console.log(p.nombre + " -> "+p.nombre+" cap=" + cap.toString() + " cost=" + cost.toString());
+		data.nodes.update([{id: entrada, color: {border: "orange"}}]);
+		data.nodes.update([{id: salida, color: {border: "orange"}}]);
 		data.edges.update([{from: entrada, to: salida, color: "orange"}]);
 
 		await pause(500);
 
+		data.nodes.update([{id: entrada, color: {border: "#6AA84F"}}]);
+		data.nodes.update([{id: salida, color: {border: "#6AA84F"}}]);
 		data.edges.update([{from: entrada, to: salida, color: "#545454"}]);
 
 		indiceNombre.set(entrada, p.nombre);
@@ -203,10 +215,14 @@ async function build() {
 			console.log(m);
 			if(m_id.has(m.id)) {
 				console.log(indiceNombre.get(m_id.get(m.id)) + " -> "+p.nombre+" cap=" + m.limite.toString() + " cost=" + m.preferencia.toString());
+				data.nodes.update([{id: m_id.get(m.id), color: {border: "orange"}}]);
+				data.nodes.update([{id: entrada, color: {border: "orange"}}]);
 				data.edges.update([{from: m_id.get(m.id), to: entrada, color: "orange"}]);
 
 				await pause(500);
 
+				data.nodes.update([{id: m_id.get(m.id), color: {border: "#6AA84F"}}]);
+				data.nodes.update([{id: entrada, color: {border: "#6AA84F"}}]);
 				data.edges.update([{from: m_id.get(m.id), to: entrada, color: "#545454"}]);
 			}
 		}
@@ -217,8 +233,14 @@ async function build() {
 			if(b_id.has(b.id)) {
 				const aux = 1;
 				console.log(p.nombre + " -> "+ indiceNombre.get(b_id.get(b.id))  +" cap=" + aux.toString() + " cost=" + b.preferencia.toString());
+				data.nodes.update([{id: salida, color: {border: "orange"}}]);
+				data.nodes.update([{id: b_id.get(b.id), color: {border: "orange"}}]);
 				data.edges.update([{from: salida, to: b_id.get(b.id), color: "orange"}]);
+
 				await pause(500);
+
+				data.nodes.update([{id: salida, color: {border: "#6AA84F"}}]);
+				data.nodes.update([{id: b_id.get(b.id), color: {border: "#6AA84F"}}]);
 				data.edges.update([{from: salida, to: b_id.get(b.id), color: "#545454"}]);
 			}
 		}
