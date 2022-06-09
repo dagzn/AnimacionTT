@@ -105,7 +105,7 @@ async function build() {
       width: 2,
 			font: {
 					color: "black",
-					size: 10,
+					size: 12,
 					strokeWidth: 3,
 					strokeColor: "white"
 			},
