@@ -129,9 +129,9 @@ async function build() {
 	const fuente = 0;
 	await pause(500);
 
-	data.nodes.update([{id: fuente, label: "S"}]);
+	data.nodes.update([{id: fuente, label: "Fuente"}]);
 	const destino = n-1;
-	data.nodes.update([{id: destino, label: "T"}]);
+	data.nodes.update([{id: destino, label: "Destino"}]);
 	network.fit();
 	await pause(500);
 
@@ -152,13 +152,13 @@ async function build() {
 		console.log("Source -> "+ m.nombre + " cap=" + cap.toString() + " cost=" + cost.toString());
 		data.nodes.update([{id: fuente, color: {border: "orange"}}]);
 		data.nodes.update([{id: i+1, color: {border: "orange"}}]);
-		data.edges.update([{from: fuente, to: i+1, color: "orange"}]);
+		data.edges.update([{from: fuente, to: i+1, label: cap.toString()+"/"cost.toString(), color: "orange"}]);
 
 		await pause(500);
 
 		data.nodes.update([{id: fuente, color: {border: "#6AA84F"}}]);
 		data.nodes.update([{id: i+1, color: {border: "#6AA84F"}}]);
-		data.edges.update([{from: fuente, to: i+1, color: "#545454"}]);
+		data.edges.update([{from: fuente, to: i+1, label: cap.toString()+"/"cost.toString(),color: "#545454"}]);
 	}
 	console.log(m_id);
 
@@ -176,13 +176,13 @@ async function build() {
 		console.log(b.nombre + " -> Sink cap=" + cap.toString() + " cost=" + cost.toString());
 		data.nodes.update([{id: nodo, color: {border: "orange"}}]);
 		data.nodes.update([{id: destino, color: {border: "orange"}}]);
-		data.edges.update([{from: nodo, to: destino, color: "orange"}]);
+		data.edges.update([{from: nodo, to: destino, label: cap.toString()+"/"cost.toString(), color: "orange"}]);
 
 		await pause(500);
 
 		data.nodes.update([{id: nodo, color: {border: "#6AA84F"}}]);
 		data.nodes.update([{id: destino, color: {border: "#6AA84F"}}]);
-		data.edges.update([{from: nodo, to: destino, color: "#545454"}]);
+		data.edges.update([{from: nodo, to: destino, label: cap.toString()+"/"cost.toString(), color: "#545454"}]);
 
 	}
 	console.log(b_id);
@@ -199,13 +199,13 @@ async function build() {
 		console.log(p.nombre + " -> "+p.nombre+" cap=" + cap.toString() + " cost=" + cost.toString());
 		data.nodes.update([{id: entrada, color: {border: "orange"}}]);
 		data.nodes.update([{id: salida, color: {border: "orange"}}]);
-		data.edges.update([{from: entrada, to: salida, color: "orange"}]);
+		data.edges.update([{from: entrada, to: salida, label: cap.toString()+"/"cost.toString(), color: "orange"}]);
 
 		await pause(500);
 
 		data.nodes.update([{id: entrada, color: {border: "#6AA84F"}}]);
 		data.nodes.update([{id: salida, color: {border: "#6AA84F"}}]);
-		data.edges.update([{from: entrada, to: salida, color: "#545454"}]);
+		data.edges.update([{from: entrada, to: salida, label: cap.toString()+"/"cost.toString(), color: "#545454"}]);
 
 		indiceNombre.set(entrada, p.nombre);
 		indiceNombre.set(salida, p.nombre);
@@ -214,16 +214,18 @@ async function build() {
 			const m = p.materias[j];
 			console.log(m);
 			if(m_id.has(m.id)) {
+				cap = m.limite.toString();
+				cost = m.preferencia.toString();
 				console.log(indiceNombre.get(m_id.get(m.id)) + " -> "+p.nombre+" cap=" + m.limite.toString() + " cost=" + m.preferencia.toString());
 				data.nodes.update([{id: m_id.get(m.id), color: {border: "orange"}}]);
 				data.nodes.update([{id: entrada, color: {border: "orange"}}]);
-				data.edges.update([{from: m_id.get(m.id), to: entrada, color: "orange"}]);
+				data.edges.update([{from: m_id.get(m.id), to: entrada, label: cap.toString()+"/"cost.toString(), color: "orange"}]);
 
 				await pause(500);
 
 				data.nodes.update([{id: m_id.get(m.id), color: {border: "#6AA84F"}}]);
 				data.nodes.update([{id: entrada, color: {border: "#6AA84F"}}]);
-				data.edges.update([{from: m_id.get(m.id), to: entrada, color: "#545454"}]);
+				data.edges.update([{from: m_id.get(m.id), to: entrada, label: cap.toString()+"/"cost.toString(), color: "#545454"}]);
 			}
 		}
 
@@ -232,16 +234,18 @@ async function build() {
 			console.log(b);
 			if(b_id.has(b.id)) {
 				const aux = 1;
+				cap = aux.toString();
+				cost = b.preferencia.toString()
 				console.log(p.nombre + " -> "+ indiceNombre.get(b_id.get(b.id))  +" cap=" + aux.toString() + " cost=" + b.preferencia.toString());
 				data.nodes.update([{id: salida, color: {border: "orange"}}]);
 				data.nodes.update([{id: b_id.get(b.id), color: {border: "orange"}}]);
-				data.edges.update([{from: salida, to: b_id.get(b.id), color: "orange"}]);
+				data.edges.update([{from: salida, to: b_id.get(b.id), label: cap.toString()+"/"cost.toString(), color: "orange"}]);
 
 				await pause(500);
 
 				data.nodes.update([{id: salida, color: {border: "#6AA84F"}}]);
 				data.nodes.update([{id: b_id.get(b.id), color: {border: "#6AA84F"}}]);
-				data.edges.update([{from: salida, to: b_id.get(b.id), color: "#545454"}]);
+				data.edges.update([{from: salida, to: b_id.get(b.id), label: cap.toString()+"/"cost.toString(), color: "#545454"}]);
 			}
 		}
 	}
